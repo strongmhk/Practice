@@ -19,7 +19,7 @@ public class User {
     private long id;
     private String username;
     private String password;
-    private String roles; // USER, ADMIN
+    private String roles; // USER, ADMIN, 하나의 유저에 권한이 두 개 이상있을 경우
 
     public List<String> getRoleList(){
         if(this.roles.length() > 0){
