@@ -1,4 +1,4 @@
-package com.cos.jwt.auth;
+package com.cos.jwt.config.auth;
 
 import com.cos.jwt.model.User;
 import com.cos.jwt.repository.UserRepository;
@@ -20,6 +20,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("PrincipalDetailsService의 loadUserByUsername()");
         User userEntity = userRepository.findByUsername(username);
+        System.out.println("userEntity : " + userEntity);
         return new PrincipalDetails(userEntity);
     }
 }
