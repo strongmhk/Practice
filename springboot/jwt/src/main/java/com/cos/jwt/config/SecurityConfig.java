@@ -1,6 +1,8 @@
 package com.cos.jwt.config;
 
 import com.cos.jwt.config.jwt.JwtAuthenticationFilter;
+import com.cos.jwt.config.jwt.JwtAuthorizationFilter;
+import com.cos.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +17,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
+    private final UserRepository userRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable() // form 태그를 이용해 로그인 하지 않겠다.
                 .httpBasic().disable() // http Basic(header에 Authorization : ID,PW 를 담아감 근데 암호화가 안돼서 보안에 취약) , http Bearer(header에 Authorization : token을 담아감 ID, PW 직접적 노출이 없어 보안 ㄱㅊ)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager())) // AuthenticationManager를 던져줘야함(WebSecurityConfigurerAdapter에 존재함)
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/**")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")

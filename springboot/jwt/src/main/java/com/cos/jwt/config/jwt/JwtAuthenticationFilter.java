@@ -96,9 +96,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         .withExpiresAt(new Date(System.currentTimeMillis()+(60000 * 10))) // 60000이면 60초
                                 .withClaim("id", principalDetails.getUser().getId())
                                         .withClaim("username", principalDetails.getUser().getUsername())
-                                                .sign(Algorithm.HMAC512("cos"));
+                                                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-        response.addHeader("Authorization", "Bearer "+jwtToken); // Bearer 뒤에 한 칸 반드시 띄어야함
+        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken); // Bearer 뒤에 한 칸 반드시 띄어야함
     }
 }
 
